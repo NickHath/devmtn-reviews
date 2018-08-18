@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Page Title</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+  <style>
+    h1 {
+      width: 800px;
+      margin: auto;
+      font-size: 100px;
+    }
+  </style>
+  <h1>Open The Console</h1>
+  <script>
+    var person = {
+      state: {
+        name: 'Bob Ross',
+        favoriteThings: ['Happy little Trees', 'Happy Accidents', 'Groves', 'Mountains'],
+        age: '54',
+      },
+      greet: function (friend) {
+        //Notice we will be checking what 'this' is every time we run the function
+        console.log(`\n\ngreet's "this":`);
+        console.log(this);
+        console.log(`\n\ngreet's return value:`);
+        return `Hello ${friend}, My name is ${this.state.name}. do you like ${this.state.favoriteThings[0]}?`
+      }
+    }
+    // Step 1
+    // Run the greet method on the person object.
+    // Pay close attention to what the console log of 'this' prints.
+
+    // ANSWER
+    // let response = person.greet('Nick');
+    // console.log(response);
+
+    // Step 2
+    // Now create a variable called fn and save person.greet to it.
+    // Run the fn function and notice what 'this' is in the console.
+
+    // ANSWER
+    // var fn = person.greet;
+    // fn('Nick');
+
+    // Step 3
+    // If we pass person.greet as a parameter to a function and run
+    // it we will see the same issue.
+    function callerBack(greet, name) {
+      console.log(`callerBack's "this"`);
+      console.log(this);
+      return greet(name);
+    }
+
+    // Invoke callerBack and pass in person.greet and a name
+    // You should see that it breaks all because of 'this'
+    // 'this' is the window object and it does not have the state property.
+    // How can we ensure that function uses the correct 'this' and let us
+    // access persons state property?
+
+    // ANSWER
+    // callerBack(person.greet, 'Nick');
+
+    // Step 4
+    // Now for this step create a new property on personTwo.props called greet
+    // and give it the value of person.greet.
+    const personTwo = {
+      state: {
+        name: 'Tim Allen',
+        favoriteThings: ['Home Improvement'],
+        age: '65',
+      },
+      props: {
+        job: 'fixer',
+        friends: ['Al Borland', 'Wilson Wilson Jr.'],
+        greet: function (friend) {
+          //Notice we will be checking what 'this' is every time we run the function
+          console.log(`\n\ngreet's "this"`);
+          console.log(this)
+          console.log(`\n\ngreet's return value`);
+          return `Hello ${friend}, My name is ${this.state.name}. do you like ${this.state.favoriteThings[0]}?`
+        }
+      },
+    }
+    // Run personTwo.props.greet and notice what 'this' is.
+    // Notice 'this' still does not see state! But it does see the job and
+    // friend properties. Interesting.
+
+    // ANSWER
+    // personTwo.props.greet('Nick');
+
+    // Step 5
+    // There is a fix to ensure you function remembers what 'this' should be.
+    // look up '.bind' and try and redo steps 2, 3 and 4 but use your new found
+    // knowledge about '.bind' to make sure it remembers what 'this' is.
+
+    // ANSWER
+    var boundFunction = person.greet.bind(person);
+    let result = boundFunction('Nick');
+    console.log(result);
+    
+  </script>
+</body>
+
+</html>
